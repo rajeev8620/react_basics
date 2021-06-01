@@ -1,23 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import Home from "./component/home/Home";
+import { positions, Provider } from "react-alert";
+import AlertTemplate from "react-alert-template-basic";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+import About from './component/about/About';
+import Dashboard from './component/dashboard/Dashboard';
+import NotFoundPage from './component/notfoundpage/NotFoundPage'
+const options = {
+  timeout: 5000,
+  position: positions.BOTTOM_CENTER
+};
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Provider template={AlertTemplate} {...options}>
+      <Router>
+        <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route path="/about">
+              <About />
+            </Route>
+            <Route path="/dashboard">
+              <Dashboard />
+            </Route>
+            <Route path="*" component={NotFoundPage} />
+          </Switch>
+        </Router>
+      </Provider>
     </div>
   );
 }
