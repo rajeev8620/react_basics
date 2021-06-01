@@ -6,11 +6,13 @@ import Tasks from '../tasks/Tasks';
 export default function ToDoList() {
     const [taskList, setTaskList] = useState([]);
     const [showLoader, setShowLoader] = useState(false);
+    const [showForm, setShowForm] = useState(false);
     useEffect(()=>{
         const getTask = async () =>{
             const allTaskList = await fetchTasks();
             setTaskList(allTaskList);
             setShowLoader(false);
+            setShowForm(false);
         }
         getTask();
     },[]);
@@ -20,17 +22,30 @@ export default function ToDoList() {
         const data = await res.json()
         return data
       }
-    console.log(taskList);
+    const addtodolistHandle = () =>{
+        setShowForm(true);
+    }
+    console.log('==>>', showForm);
     return (
         <div className="container">
-           <h2>Todo list</h2>
-           {showLoader && <Loader
-                            style={{marginTop: '0px'}} 
-                            type="ThreeDots" 
-                            color="#00BFFF" 
-                            height={80} 
-                            width={80} />}
-           {taskList.length > 0 && <Tasks taskList={taskList}/>}
+            <h2>Todo list</h2>
+        {showLoader ? <Loader
+                         style={{marginTop: '0px'}} 
+                         type="ThreeDots" 
+                         color="#00BFFF" 
+                         height={80} 
+                         width={80} /> :
+           (<div>
+           <button className="btn" onClick={addtodolistHandle}>Add</button>
+           {showForm && <InputForm/>}
+           {taskList.length && showForm === false > 0 && <Tasks taskList={taskList}/>}</div>)}
         </div>
     )
+}
+const InputForm = () =>{
+    return(
+        <>
+        <h3>User Input data</h3>
+        </>
+    );
 }
